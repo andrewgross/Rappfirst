@@ -7,17 +7,22 @@ module Rappfirst
         username = api_options[:auth][:username]
         api_key = api_options[:auth][:api_key]
       else
-        config = YAML::load( File.open( 'config.yml') )
-        username = config['username']
-        api_key = config['password']
+        username = get_config('username')
+        api_key = get_config('password')
       end
       base_uri = api_options[:base_uri] ||= 'https://wwws.appfirst.com/api/v3'
 
       self.class.basic_auth username, api_key
       self.class.base_uri base_uri
     end
-
     #response = self.class.get("/servers/#{id}/")
+
+    private
+
+    def get_config(key)
+      config = YAML::load( File.open( 'config.yml') )
+      return config[key]
+    end
 
   end
 end

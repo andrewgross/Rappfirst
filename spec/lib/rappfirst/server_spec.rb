@@ -14,11 +14,11 @@ describe Rappfirst::Server do
       must_equal 'https://wwws.appfirst.com/api/v3'
     end
  
-    # it "must have API Credentials" do
-    #   Rappfirst::Client.
-    #   instance_variable_get("@default_options")[:basic_auth].
-    #   keys.must_include(:username)
-    # end
+    it "must have API Credentials" do
+      Rappfirst::Client.
+      instance_variable_get("@default_options")[:basic_auth].
+      keys.must_include(:username)
+    end
 
   end
 

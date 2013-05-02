@@ -48,6 +48,10 @@ describe Rappfirst::Client do
         client.servers.each { |s| s.keys().must_include 'id' }
       end
 
+      it "should return an array of server objects" do
+        skip "TODO: Implement this"
+      end
+
     end
 
     describe "Get specific server" do
@@ -68,6 +72,10 @@ describe Rappfirst::Client do
       it "must accept query parameters with a question mark" do
         client.servers(query='?hostname=yipit-linkedin-worker2').
         size.must_equal 1
+      end
+
+      it "should return a server object" do
+        skip "TODO: Implement this"
       end
 
     end
