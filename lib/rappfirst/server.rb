@@ -5,7 +5,7 @@ module Rappfirst
     attr_accessor :id
 
     def writeable?(name)
-      return [ 'description', 'nickname'].include?(name)
+      return ['description', 'nickname'].include?(name)
     end
 
     def initialize(id, api_options=nil)
@@ -30,25 +30,23 @@ module Rappfirst
       set_attributes
     end
 
-    # nickname, description
-
     private
 
     def set_attributes
       response = self.class.get("/servers/#{self.id}/")
       response.each do |name, v|
         create_method( "#{name}=".to_sym ) { |val| 
-            if instance_variable_get( "@" + name) 
+            if instance_variable_get("@" + name) 
               # If it does exist, only overwrite if writeable?
               if self.writeable?(name)
-                instance_variable_set( "@" + name, val)
+                instance_variable_set("@" + name, val)
               end
             else # Write it if it doesn't exist yet
-              instance_variable_set( "@" + name, val)
+              instance_variable_set("@" + name, val)
             end
         }
         create_method( name.to_sym ) { 
-            instance_variable_get( "@" + name ) 
+            instance_variable_get("@" + name ) 
         }
 
         instance_variable_set("@" + name, v)
@@ -60,7 +58,7 @@ module Rappfirst
     end
 
     def get_config(key)
-      config = YAML::load( File.open( 'config.yml') )
+      config = YAML::load( File.open('config.yml'))
       return config[key]
     end
 
