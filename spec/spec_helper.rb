@@ -1,6 +1,7 @@
 require_relative "../lib/rappfirst"
 
 require 'minitest/autorun'
+require "minitest/spec"
 require 'webmock/minitest'
 require 'vcr'
 require 'turn'
@@ -9,8 +10,6 @@ require 'turn'
 Turn.config do |c|
  # :outline  - turn's original case/test outline mode [default]
  c.format  = :outline
- # turn on invoke/execute tracing, enable full backtrace
- c.trace   = true
  # use humanized test names (works only with :outline format)
  c.natural = true
 end
