@@ -89,7 +89,7 @@ describe Rappfirst::Client do
     before do
       VCR.insert_cassette 'single_server', :record => :new_episodes
     end
-   
+
     after do
       VCR.eject_cassette
     end

@@ -21,7 +21,7 @@ module Rappfirst
 
     def server(id)
       api_options = self.class.default_options
-      Rappfirst::Server.new(id, api_options)
+      Rappfirst::Server.new(id, api_options=api_options)
     end
 
   end
