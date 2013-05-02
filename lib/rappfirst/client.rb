@@ -9,15 +9,19 @@ module Rappfirst
         api_key = config['password']
       end
       self.class.basic_auth username, api_key
+      self.class.base_uri 'https://wwws.appfirst.com/api/v3'
     end
-
-    base_uri 'https://wwws.appfirst.com/api/v3'
 
     def servers(query_string=nil)
       if query_string && ! query_string.start_with?('?')
         query_string = '?' + query_string
       end
       self.class.get("/servers/#{query_string}")
+    end
+
+    def server(id)
+      api_options = self.class.default_options
+      Rappfirst::Server.new(id, api_options)
     end
 
   end
