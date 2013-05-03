@@ -36,17 +36,15 @@ module Rappfirst
       response = self.class.get("/servers/#{self.id}/")
       response.each do |name, v|
         create_method( "#{name}=".to_sym ) { |val| 
-            if instance_variable_get("@" + name) 
-              # If it does exist, only overwrite if writeable?
-              if self.writeable?(name)
-                instance_variable_set("@" + name, val)
-              end
-            else # Write it if it doesn't exist yet
-              instance_variable_set("@" + name, val)
-            end
+          if ! instance_variable_get("@" + name)
+            instance_variable_set("@" + name, val)
+          elsif self.writeable?(name) && instance_variable_get("@" + name)
+            instance_variable_set("@" + name, val)
+          end
         }
+        
         create_method( name.to_sym ) { 
-            instance_variable_get("@" + name ) 
+          instance_variable_get("@" + name ) 
         }
 
         instance_variable_set("@" + name, v)
@@ -54,7 +52,7 @@ module Rappfirst
     end
 
     def create_method( name, &block )
-        self.class.send( :define_method, name, &block )
+      self.class.send( :define_method, name, &block )
     end
 
     def get_config(key)

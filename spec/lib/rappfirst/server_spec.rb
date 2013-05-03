@@ -54,6 +54,23 @@ describe Rappfirst::Server do
       server.nickname.wont_equal n
     end
 
+  end
+
+  describe "caching" do
+
+    let(:server) { Rappfirst::Server.new('11743') }
+
+    before do
+      VCR.insert_cassette 'server', :record => :new_episodes
+    end
+   
+    after do
+      VCR.eject_cassette
+    end
+
+    it "must cache attributes" do
+      skip "TODO: Disable connection and test"
+    end
 
   end
 
