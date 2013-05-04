@@ -22,7 +22,7 @@ describe Rappfirst::Server do
 
   end
 
-  describe "Populate attributes" do
+  describe "attributes" do
 
     let(:server) { Rappfirst::Server.new('11743') }
 
@@ -34,42 +34,42 @@ describe Rappfirst::Server do
       VCR.eject_cassette
     end
 
-    it "must populate the hostname attribute" do
-      server.must_respond_to :hostname
+    describe "retrieve and create methods" do
+
+      it "must populate the hostname attribute" do
+        server.must_respond_to :hostname
+      end
+
+      it "must make the hostname attribute read-only" do
+        h = server.hostname
+        server.hostname = "foobar"
+        server.hostname.must_equal h
+      end
+
+      it "must populate the nickname attribute" do
+        server.must_respond_to :nickname
+      end
+
+      it "must make the nickname attribute writeable" do
+        n = server.nickname
+        server.nickname = "foobar"
+        server.nickname.wont_equal n
+      end
+
     end
 
-    it "must make the hostname attribute read-only" do
-      h = server.hostname
-      server.hostname = "foobar"
-      server.hostname.must_equal h
-    end
+    describe "cache data" do
 
-    it "must populate the nickname attribute" do
-      server.must_respond_to :nickname
-    end
+      before do
+        server.polled_data
+        stub_request(:any, /wwws.appfirst.com/).to_timeout
+      end
 
-    it "must make the nickname attribute writeable" do
-      n = server.nickname
-      server.nickname = "foobar"
-      server.nickname.wont_equal n
-    end
+      it "must cache attributes" do
+        skip "TODO: Implement Refreshing of base attributes"
+        lambda { server.hostname }.must_raise Timeout::Error
+      end
 
-  end
-
-  describe "caching" do
-
-    let(:server) { Rappfirst::Server.new('11743') }
-
-    before do
-      VCR.insert_cassette 'server', :record => :new_episodes
-    end
-   
-    after do
-      VCR.eject_cassette
-    end
-
-    it "must cache attributes" do
-      skip "TODO: Disable connection and test"
     end
 
   end
@@ -113,20 +113,6 @@ describe Rappfirst::Server do
       server.polled_data(refresh=true)['frequency'].wont_equal current_data['frequency'] 
     end
 
-  end
-
-  describe "polled data config caching" do
-
-    let(:server) { Rappfirst::Server.new('11743') }
-
-    before do
-      VCR.insert_cassette 'server', :record => :new_episodes
-    end
-   
-    after do
-      VCR.eject_cassette
-    end
-    
     before do
       server.polled_data
       stub_request(:any, /wwws.appfirst.com/).to_timeout
@@ -134,6 +120,45 @@ describe Rappfirst::Server do
 
     it "must refresh the results if forced" do
       lambda { server.polled_data(refresh=true) }.must_raise Timeout::Error
+    end
+
+  end
+
+  describe "outages" do
+    
+    let(:server) { Rappfirst::Server.new('11743') }
+
+    before do
+      VCR.insert_cassette 'server', :record => :new_episodes
+    end
+     
+    after do
+      VCR.eject_cassette
+    end
+
+    describe "retrieve data" do
+
+      it "must have an outages method" do
+        server.must_respond_to :outages
+      end
+
+      it "must retrieve outage data" do
+        server.outages.must_be_instance_of Array
+      end
+
+    end
+
+    describe "cached data" do
+
+      before do
+        server.polled_data
+        stub_request(:any, /wwws.appfirst.com/).to_timeout
+      end
+
+      it "must cache outage data" do
+        lambda { server.outages(refresh = true) }.must_raise Timeout::Error
+      end
+
     end
 
   end
