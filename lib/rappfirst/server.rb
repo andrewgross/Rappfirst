@@ -47,7 +47,18 @@ module Rappfirst
       refresh ? @tags = get_tags : @tags ||= get_tags
     end
 
+    def delete
+      delete_self
+    end
+
     private
+
+      def delete_self
+        response = self.class.delete("/servers/#{self.id}/")
+        unless response.code == 200
+          raise "Unable to delete server, received HTTP code #{response.code}"
+        end
+      end
 
       def get_tags
         return self.class.get("/servers/#{self.id}/tags/")['server_tags']

@@ -22,6 +22,8 @@ describe Rappfirst::Server do
 
   end
 
+
+
   describe "attributes" do
 
     let(:server) { Rappfirst::Server.new('11743') }
@@ -74,6 +76,8 @@ describe Rappfirst::Server do
 
   end
 
+
+
   describe "polled data config" do
 
     let(:server) { Rappfirst::Server.new('11743') }
@@ -124,6 +128,8 @@ describe Rappfirst::Server do
 
   end
 
+
+
   describe "outages" do
     
     let(:server) { Rappfirst::Server.new('11743') }
@@ -162,6 +168,8 @@ describe Rappfirst::Server do
     end
 
   end
+
+
 
   describe "tags" do
 
@@ -202,5 +210,39 @@ describe Rappfirst::Server do
 
   end
 
+  describe "delete server" do
+
+    let(:server) { Rappfirst::Server.new('245342') }
+
+    before do
+      VCR.insert_cassette 'server', :record => :new_episodes
+    end
+     
+    after do
+      VCR.eject_cassette
+    end
+
+    describe "signature" do
+      
+      it "must have a deletion method" do
+        server.must_respond_to :delete
+      end
+
+    end
+
+    describe "failed deletion" do
+
+      before do
+        stub_request(:any, /wwws.appfirst.com/).
+        to_return(:status => [500, "Internal Server Error"])
+      end
+
+      it "must delete itself" do
+        lambda { server.delete }.must_raise RuntimeError
+      end
+
+    end
+
+  end
 
 end
