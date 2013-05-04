@@ -50,7 +50,7 @@ module Rappfirst
     private
 
       def get_tags
-        self.class.get("/servers/#{self.id}/tags/")['server_tags']
+        return self.class.get("/servers/#{self.id}/tags/")['server_tags']
       end
 
       def get_outage_data
