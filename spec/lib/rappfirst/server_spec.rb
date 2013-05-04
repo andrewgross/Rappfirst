@@ -136,7 +136,7 @@ describe Rappfirst::Server do
       VCR.eject_cassette
     end
 
-    describe "retrieve data" do
+    describe "retrieve outages" do
 
       it "must have an outages method" do
         server.must_respond_to :outages
@@ -151,7 +151,7 @@ describe Rappfirst::Server do
     describe "cached data" do
 
       before do
-        server.polled_data
+        server.outages
         stub_request(:any, /wwws.appfirst.com/).to_timeout
       end
 
@@ -162,5 +162,45 @@ describe Rappfirst::Server do
     end
 
   end
+
+  describe "tags" do
+
+    let(:server) { Rappfirst::Server.new('11743') }
+
+    before do
+      VCR.insert_cassette 'server', :record => :new_episodes
+    end
+     
+    after do
+      VCR.eject_cassette
+    end
+
+    describe "retrieve tags" do
+
+      it "must have a tags method" do
+        server.must_respond_to :tags
+      end
+
+      it "must retrieve tag data" do
+        server.tags.must_be_instance_of Array
+      end
+
+    end
+
+    describe "cached data" do
+
+      before do
+        server.tags
+        stub_request(:any, /wwws.appfirst.com/).to_timeout
+      end
+
+      it "must cache outage data" do
+        lambda { server.tags(refresh = true) }.must_raise Timeout::Error
+      end
+
+    end
+
+  end
+
 
 end
