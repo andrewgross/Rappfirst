@@ -39,10 +39,6 @@ describe Rappfirst::Client do
       it "must have a servers method" do
         client.must_respond_to :servers
       end
-     
-      it "must parse the api response from JSON to Hash" do
-        client.servers.must_be_instance_of Array
-      end
 
       it "should return an array of server objects" do
         client.servers.each { |s| s.must_be_instance_of Rappfirst::Server}

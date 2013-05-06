@@ -15,7 +15,7 @@ module Rappfirst
 
     def servers(query_string=nil)
       response = get_servers(query_string)
-      if response.length == 1
+      if response.length == 1 && query_string
         return server(response.first['id'])
       else
         s = Array.new
