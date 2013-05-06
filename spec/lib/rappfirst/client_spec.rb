@@ -43,13 +43,9 @@ describe Rappfirst::Client do
       it "must parse the api response from JSON to Hash" do
         client.servers.must_be_instance_of Array
       end
-     
-      it "must perform the request and get valid data" do
-        client.servers.each { |s| s.keys().must_include 'id' }
-      end
 
       it "should return an array of server objects" do
-        skip "TODO: Implement this"
+        client.servers.each { |s| s.must_be_instance_of Rappfirst::Server}
       end
 
     end
@@ -66,16 +62,12 @@ describe Rappfirst::Client do
 
       it "must accept query parameters without a question mark" do
         client.servers(query='hostname=yipit-linkedin-worker2').
-        size.must_equal 1
-      end
-
-      it "must accept query parameters with a question mark" do
-        client.servers(query='?hostname=yipit-linkedin-worker2').
-        size.must_equal 1
+        must_be_instance_of Rappfirst::Server
       end
 
       it "should return a server object" do
-        skip "TODO: Implement this"
+        client.servers(query='?hostname=yipit-linkedin-worker2').
+        must_be_instance_of Rappfirst::Server
       end
 
     end
