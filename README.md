@@ -1,24 +1,40 @@
 # Rappfirst
 
-TODO: Write a gem description
+A ruby wrapper for the Appfirst API v3.  Currently implementing the `/servers/` endpoint.  As this is still in beta several parameters are not fully implemented.
+
+**Implemented**
+* `/servers/`
+* `/servers/{id}`
+* `/servers/{id}/tags`
+* `/servers/{id}/polled_data_config`
+* `/servers/{id}/outages`
+
+**TODO**
+* `/servers/{id}/data`
+* `/servers/{id}/processes`
+* `/servers/{id}/auto_detection`
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'rappfirst'
+```ruby
+gem 'rappfirst'
+```
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install rappfirst
+```bash
+$ gem install rappfirst
+```
 
 ## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
