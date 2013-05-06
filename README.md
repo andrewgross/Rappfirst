@@ -36,6 +36,14 @@ $ gem install rappfirst
 
 ## Usage
 
+All contact with the API starts with connecting via the Client.
+
+```ruby
+include 'rappfirst'
+
+c = Rappfirst::Client.new(username="user@example.com", api_key="1234567890")
+```
+
 ## Contributing
 
 1. Fork it
