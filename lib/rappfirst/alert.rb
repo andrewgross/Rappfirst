@@ -28,7 +28,18 @@ module Rappfirst
       set_attributes
     end
 
+    def delete
+      delete_self
+    end
+
     private
+
+      def delete_self
+        response = self.class.delete("/alerts/#{self.id}/")
+        unless response.code == 200
+          raise "Unable to delete server, received HTTP code #{response.code}"
+        end
+      end
 
       def set_attributes
         response = get_attributes

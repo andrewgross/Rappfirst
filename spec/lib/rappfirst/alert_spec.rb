@@ -52,5 +52,40 @@ describe Rappfirst::Alert do
 
   end
 
+  describe "delete alert" do
+
+    let(:alert) { Rappfirst::Alert.new('114140') }
+
+    before do
+      VCR.insert_cassette 'single_alert', :record => :new_episodes
+    end
+
+    after do
+      VCR.eject_cassette
+    end
+
+    describe "signature" do
+
+      it "must have a deletion method" do
+        alert.must_respond_to :delete
+      end
+
+    end
+
+    describe "failed deletion" do
+
+      before do
+        stub_request(:any, /wwws.appfirst.com/).
+        to_return(:status => [500, "Internal Server Error"])
+      end
+
+      it "must delete itself" do
+        lambda { alert.delete }.must_raise RuntimeError
+      end
+
+    end
+
+  end
+
 
 end
