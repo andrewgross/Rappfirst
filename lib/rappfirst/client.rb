@@ -31,6 +31,10 @@ module Rappfirst
       Rappfirst::Server.new(id, api_options=api_options)
     end
 
+    def alert(id)
+      Rappfirst::Alert.new(id)
+    end
+
     private
 
       def get_servers(query_string=nil)

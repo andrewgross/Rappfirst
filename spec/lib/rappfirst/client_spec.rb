@@ -1,19 +1,19 @@
 require_relative '../../spec_helper'
 
 describe Rappfirst::Client do
- 
+
   describe "default attributes" do
- 
+
     it "must include httparty methods" do
       Rappfirst::Client.must_include HTTParty
     end
- 
+
     it "must have the base url set to the Appfirst API" do
       Rappfirst::Client.
       instance_variable_get("@default_options")[:base_uri].
       must_equal 'https://wwws.appfirst.com/api/v3'
     end
- 
+
     it "must have API Credentials" do
       Rappfirst::Client.
       instance_variable_get("@default_options")[:basic_auth].
@@ -21,9 +21,9 @@ describe Rappfirst::Client do
     end
 
   end
- 
+
   describe "GET servers" do
- 
+
     let(:client) { Rappfirst::Client.new }
 
     describe "Get all servers" do
@@ -31,11 +31,11 @@ describe Rappfirst::Client do
       before do
         VCR.insert_cassette 'servers', :record => :new_episodes
       end
-     
+
       after do
         VCR.eject_cassette
       end
-     
+
       it "must have a servers method" do
         client.must_respond_to :servers
       end
@@ -47,11 +47,11 @@ describe Rappfirst::Client do
     end
 
     describe "Get specific server" do
-      
+
       before do
         VCR.insert_cassette 'search_for_server', :record => :new_episodes
       end
-     
+
       after do
         VCR.eject_cassette
       end
@@ -71,7 +71,7 @@ describe Rappfirst::Client do
   end
 
   describe "Query single server" do
- 
+
     let(:client) { Rappfirst::Client.new }
 
     before do
@@ -89,6 +89,30 @@ describe Rappfirst::Client do
     it "must return a server object" do
       client.server('11743').must_be_instance_of Rappfirst::Server
     end
+
+  end
+
+  describe "Get single alert" do
+
+    let(:client) { Rappfirst::Client.new }
+
+
+    before do
+      VCR.insert_cassette 'single_alert', :record => :new_episodes
+    end
+
+    after do
+      VCR.eject_cassette
+    end
+
+    it "must have an alerts method" do
+      client.must_respond_to :alert
+    end
+
+    it "must return an alert object" do
+      client.alert('foo').must_be_instance_of Rappfirst::Alert
+    end
+
 
   end
 
