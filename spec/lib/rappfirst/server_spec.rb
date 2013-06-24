@@ -1,27 +1,33 @@
 require_relative '../../spec_helper'
 
 describe Rappfirst::Server do
- 
+
   describe "default attributes" do
+
+    let(:server) { Rappfirst::Server.new('11743') }
+
+    before do
+      VCR.insert_cassette 'server', :record => :new_episodes
+    end
+
+    after do
+      VCR.eject_cassette
+    end
 
     it "must include httparty methods" do
       Rappfirst::Server.must_include HTTParty
     end
- 
+
     it "must have the base url set to the Appfirst API" do
-      Rappfirst::Server.
-      instance_variable_get("@default_options")[:base_uri].
-      must_equal 'https://wwws.appfirst.com/api/v3'
+      server.class.base_uri.must_equal 'https://wwws.appfirst.com/api/v3'
     end
- 
+
     it "must have API Credentials" do
-      Rappfirst::Client.
-      instance_variable_get("@default_options")[:basic_auth].
-      keys.must_include(:username)
+      server.class.default_options[:basic_auth].keys.must_include(:username)
+      server.class.default_options[:basic_auth].keys.must_include(:password)
     end
 
   end
-
 
 
   describe "attributes" do
@@ -31,7 +37,7 @@ describe Rappfirst::Server do
     before do
       VCR.insert_cassette 'server', :record => :new_episodes
     end
-   
+
     after do
       VCR.eject_cassette
     end
@@ -85,7 +91,7 @@ describe Rappfirst::Server do
     before do
       VCR.insert_cassette 'server', :record => :new_episodes
     end
-   
+
     after do
       VCR.eject_cassette
     end
@@ -114,7 +120,7 @@ describe Rappfirst::Server do
       new_data = current_data.clone
       new_data['frequency'] = 600
       server.polled_data = new_data
-      server.polled_data(refresh=true)['frequency'].wont_equal current_data['frequency'] 
+      server.polled_data(refresh=true)['frequency'].wont_equal current_data['frequency']
     end
 
     before do
@@ -131,13 +137,13 @@ describe Rappfirst::Server do
 
 
   describe "outages" do
-    
+
     let(:server) { Rappfirst::Server.new('11743') }
 
     before do
       VCR.insert_cassette 'server', :record => :new_episodes
     end
-     
+
     after do
       VCR.eject_cassette
     end
@@ -178,7 +184,7 @@ describe Rappfirst::Server do
     before do
       VCR.insert_cassette 'server', :record => :new_episodes
     end
-     
+
     after do
       VCR.eject_cassette
     end
@@ -217,13 +223,13 @@ describe Rappfirst::Server do
     before do
       VCR.insert_cassette 'server', :record => :new_episodes
     end
-     
+
     after do
       VCR.eject_cassette
     end
 
     describe "signature" do
-      
+
       it "must have a deletion method" do
         server.must_respond_to :delete
       end

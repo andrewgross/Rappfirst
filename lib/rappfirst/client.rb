@@ -32,7 +32,8 @@ module Rappfirst
     end
 
     def alert(id)
-      Rappfirst::Alert.new(id)
+      api_options = self.class.default_options
+      Rappfirst::Alert.new(id, api_options=api_options)
     end
 
     private

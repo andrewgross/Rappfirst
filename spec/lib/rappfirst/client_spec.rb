@@ -110,7 +110,7 @@ describe Rappfirst::Client do
     end
 
     it "must return an alert object" do
-      client.alert('foo').must_be_instance_of Rappfirst::Alert
+      client.alert('114140').must_be_instance_of Rappfirst::Alert
     end
 
 

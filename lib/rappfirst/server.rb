@@ -12,7 +12,7 @@ module Rappfirst
     def initialize(id, api_options=nil)
       if api_options && api_options.keys.include?(:basic_auth)
         username = api_options[:basic_auth][:username]
-        api_key = api_options[:basic_auth][:api_key]
+        api_key = api_options[:basic_auth][:password]
       else
         username = get_config('username')
         api_key = get_config('password')
@@ -79,7 +79,7 @@ module Rappfirst
       def set_attributes
         response = get_attributes
         response.each do |name, v|
-          create_method( "#{name}=".to_sym ) { |val| 
+          create_method( "#{name}=".to_sym ) { |val|
             if ! instance_variable_get("@" + name)
               instance_variable_set("@" + name, val)
             elsif self.writeable?(name) && instance_variable_get("@" + name)
@@ -87,8 +87,8 @@ module Rappfirst
             end
           }
 
-          create_method( name.to_sym ) { 
-            instance_variable_get("@" + name) 
+          create_method( name.to_sym ) {
+            instance_variable_get("@" + name)
           }
 
           instance_variable_set("@" + name, v)
