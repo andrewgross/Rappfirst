@@ -31,6 +31,15 @@ module Rappfirst
       Rappfirst::Server.new(id, api_options=api_options)
     end
 
+    def alerts
+      response = get_alerts
+      alerts = Array.new
+      response.each do |r|
+        alerts << alert(r['id'])
+      end
+      return alerts
+    end
+
     def alert(id)
       api_options = self.class.default_options
       Rappfirst::Alert.new(id, api_options=api_options)
@@ -43,6 +52,10 @@ module Rappfirst
           query_string = '?' + query_string
         end
         self.class.get("/servers/#{query_string}")
+      end
+
+      def get_alerts
+        self.class.get("/alerts/")
       end
 
   end

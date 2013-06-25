@@ -113,6 +113,31 @@ describe Rappfirst::Client do
       client.alert('114140').must_be_instance_of Rappfirst::Alert
     end
 
+  end
+
+  describe "GET alerts" do
+
+    let(:client) { Rappfirst::Client.new }
+
+    describe "Get all alerts" do
+
+      before do
+        VCR.insert_cassette 'alerts', :record => :new_episodes
+      end
+
+      after do
+        VCR.eject_cassette
+      end
+
+      it "must have an alerts method" do
+        client.must_respond_to :alerts
+      end
+
+      it "should return an array of alert objects" do
+        client.alerts.each { |s| s.must_be_instance_of Rappfirst::Alert}
+      end
+
+    end
 
   end
 
