@@ -6,7 +6,7 @@ module Rappfirst
 
     attr_accessor :id
 
-    def initialize(id, api_options=nil)
+    def initialize(id, api_options=nil, json_data=nil)
       if api_options && api_options.keys.include?(:basic_auth)
         username = api_options[:basic_auth][:username]
         api_key = api_options[:basic_auth][:password]
@@ -25,7 +25,7 @@ module Rappfirst
       self.class.base_uri base_uri
 
       self.id = id
-      set_attributes
+      set_attributes(json_data=json_data)
     end
 
     def delete
@@ -41,8 +41,12 @@ module Rappfirst
         end
       end
 
-      def set_attributes
-        response = get_attributes
+      def set_attributes(json_data=nil)
+        if not json_data
+          response = get_attributes
+        else
+          response = json_data
+        end
         response.each do |name, v|
           create_method( "#{name}=".to_sym ) { |val|
             if ! instance_variable_get("@" + name)

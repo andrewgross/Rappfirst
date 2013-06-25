@@ -35,14 +35,14 @@ module Rappfirst
       response = get_alerts
       alerts = Array.new
       response.each do |r|
-        alerts << alert(r['id'])
+        alerts << alert(r['id'], json_data=r)
       end
       return alerts
     end
 
-    def alert(id)
+    def alert(id, json_data=nil)
       api_options = self.class.default_options
-      Rappfirst::Alert.new(id, api_options=api_options)
+      Rappfirst::Alert.new(id, api_options=api_options, json_data=json_data)
     end
 
     private
