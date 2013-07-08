@@ -1,3 +1,5 @@
+require 'json'
+
 module Rappfirst
   class Alert
 
@@ -5,6 +7,15 @@ module Rappfirst
     format :json
 
     attr_accessor :id
+
+    def writeable_attributes
+      # Strip out attributes that are hard to serialize for now, because their API is weird
+      ['name', 'active', 'direction', 'interval', 'time_above_threshold', 'threshold']
+    end
+
+    def writeable?(name)
+      return writeable_attributes.include?(name)
+    end
 
     def initialize(id, api_options=nil, json_data=nil)
       if api_options && api_options.keys.include?(:basic_auth)
@@ -18,7 +29,7 @@ module Rappfirst
       if api_options && api_options.keys.include?(:basic_uri)
         base_uri = api_options[:base_uri]
       else
-        base_uri = 'https://wwws.appfirst.com/api/v3'
+        base_uri = 'https://wwws.appfirst.com/api'
       end
 
       self.class.basic_auth username, api_key
@@ -32,13 +43,39 @@ module Rappfirst
       delete_self
     end
 
+    def sync
+      sync_self
+    end
+
     private
+
+      def sync_self
+        payload = { :body => attributes_for_put_update }
+        response = self.class.put("/alerts/#{self.id}/", payload)
+        unless response.success?
+          raise "Unable to sync alert #{self.id} with server, received HTTP code #{response.response}"
+        end
+      end
 
       def delete_self
         response = self.class.delete("/alerts/#{self.id}/")
         unless response.code == 200
           raise "Unable to delete server, received HTTP code #{response.code}"
         end
+      end
+
+      def attributes_to_hash
+        h = Hash.new
+        writeable_attributes.each do |a|
+          h[a] = self.instance_variable_get('@' + a)
+        end
+        h
+      end
+
+      def attributes_for_put_update
+        attributes_to_hash.map do |k,v|
+          "#{k}=#{v}"
+        end.join('&')
       end
 
       def set_attributes(json_data=nil)

@@ -4,7 +4,7 @@ describe Rappfirst::Alert do
 
   describe "default attributes" do
 
-    let(:alert) { Rappfirst::Alert.new('114140') }
+    let(:alert) { Rappfirst::Alert.new('121038') }
 
     before do
       VCR.insert_cassette 'single_alert', :record => :new_episodes
@@ -19,7 +19,7 @@ describe Rappfirst::Alert do
     end
 
     it "must have the base url set to the Appfirst API" do
-      alert.class.base_uri.must_equal 'https://wwws.appfirst.com/api/v3'
+      alert.class.base_uri.must_equal 'https://wwws.appfirst.com/api'
     end
 
     it "must have API Credentials" do
@@ -32,7 +32,7 @@ describe Rappfirst::Alert do
 
   describe "attributes" do
 
-    let(:alert) { Rappfirst::Alert.new('114140') }
+    let(:alert) { Rappfirst::Alert.new('121038') }
 
     before do
       VCR.insert_cassette 'single_alert', :record => :new_episodes
@@ -44,17 +44,35 @@ describe Rappfirst::Alert do
 
     describe "retrieve and create methods" do
 
-      it "must populate the target attribute" do
-        alert.must_respond_to :target
+      it "must populate the id attribute" do
+        alert.must_respond_to :id
+      end
+
+      it "must make the id attribute unwriteable" do
+        n = alert.id
+        alert.id = "foobar"
+        alert.id.wont_equal "foobar"
+      end
+
+      it "must populate the name attribute" do
+        alert.must_respond_to :name
+      end
+
+      it "must make the name attribute writeable" do
+        n = alert.name
+        alert.name = "foobar"
+        alert.name.wont_equal n
       end
 
     end
+
+
 
   end
 
   describe "delete alert" do
 
-    let(:alert) { Rappfirst::Alert.new('114140') }
+    let(:alert) { Rappfirst::Alert.new('121038') }
 
     before do
       VCR.insert_cassette 'single_alert', :record => :new_episodes

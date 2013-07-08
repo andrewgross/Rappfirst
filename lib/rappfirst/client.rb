@@ -10,7 +10,7 @@ module Rappfirst
         api_key = config['password']
       end
       self.class.basic_auth username, api_key
-      self.class.base_uri 'https://wwws.appfirst.com/api/v3'
+      self.class.base_uri 'https://wwws.appfirst.com/api'
     end
 
     def servers(query_string=nil)

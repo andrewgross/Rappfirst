@@ -19,7 +19,7 @@ describe Rappfirst::Server do
     end
 
     it "must have the base url set to the Appfirst API" do
-      server.class.base_uri.must_equal 'https://wwws.appfirst.com/api/v3'
+      server.class.base_uri.must_equal 'https://wwws.appfirst.com/api'
     end
 
     it "must have API Credentials" do

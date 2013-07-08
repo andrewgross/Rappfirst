@@ -21,7 +21,7 @@ module Rappfirst
       if api_options && api_options.keys.include?(:basic_uri)
         base_uri = api_options[:base_uri]
       else
-        base_uri = 'https://wwws.appfirst.com/api/v3'
+        base_uri = 'https://wwws.appfirst.com/api'
       end
 
       self.class.basic_auth username, api_key

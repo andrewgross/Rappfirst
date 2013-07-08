@@ -11,7 +11,7 @@ describe Rappfirst::Client do
     it "must have the base url set to the Appfirst API" do
       Rappfirst::Client.
       instance_variable_get("@default_options")[:base_uri].
-      must_equal 'https://wwws.appfirst.com/api/v3'
+      must_equal 'https://wwws.appfirst.com/api'
     end
 
     it "must have API Credentials" do
